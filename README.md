@@ -3,8 +3,8 @@ This repository contains the source code to get started with Terraform and Azure
 
 1. Setting up remote state with Azure
 2. Bringing up an Azure Logic App Integration Account
-    a. adding Maps to the Integration Account
-3. Creating Custom API Connectors
+3. Adding Maps to the Integration Account
+4. Creating Custom API Connectors
 
 # Getting Started
 
