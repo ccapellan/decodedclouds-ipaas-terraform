@@ -1,0 +1,43 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Decoded Clouds Sample API",
+      "description": "A sample OpenAPI file",
+      "version": "1.0"
+    },
+    "host": "api.decodedclouds.com",
+    "basePath": "/v1",
+    "consumes": [],
+    "produces": [],
+    "paths": {
+      "/example": {
+        "post": {
+          "operationId": "postExample",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "schema": {
+                "type": "object"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          },
+          "summary": "Example Custom Connector"
+        }
+      }
+    },
+    "definitions": {},
+    "parameters": {},
+    "responses": {},
+    "securityDefinitions": {},
+    "security": [],
+    "tags": [],
+    "schemes": [
+      "http"
+    ]
+  }
