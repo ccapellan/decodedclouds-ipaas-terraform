@@ -1,0 +1,15 @@
+arm_subscription_id = "<azure scubscription id>"
+
+#arm_principal = "<service principal id>"
+
+#arm_password = "<service principal password>"
+
+arm_environment = "Azure cloud environment.  Should be one of the following <public|usgovernment|german|china>"
+
+tenant_id = "<Azure tenant id>"
+
+environment = "<prefix to use in resource names to differentiate environments>"
+
+location = "<Azure region> i.e. eastus"
+
+naming_prefix = "<prefix used in component names to specify system>"

@@ -1,0 +1,13 @@
+[
+    {%- JSONArrayFor department in content %}
+    {
+        "DEPTID": "{{ department.id }}",
+        "EFFDT": "{{ department.startDate }}",
+        "EFF_STATUS": "{{ department.statusCode }}",
+        "DESCR": "{{ department.description | replace: "'", "''" }}",
+        "DESCRSHORT": "{{ department.name | replace: "'", "''" }}",
+        "COMPANY": "{{ department.companies | first  | replace: "'", "''" }}",
+        "OPERATING_UNIT": "{{ department.operatingUnit }}"
+    }
+    {% endJSONArrayFor %}
+]

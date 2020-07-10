@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "integrationAccount_name": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "canonical_to_department_script":{
+            "type": "String",
+            "defaultValue": ""
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/integrationAccounts/maps",
+            "apiVersion": "2016-06-01",
+            "name": "[concat(parameters('integrationAccount_name'), '/canonical-to-department')]",
+            "properties": {
+                "mapType": "Liquid",
+                "content": "[parameters('canonical_to_department_script')]",
+                "contentType": "text/plain",
+                "metadata": {}
+            }
+        }
+    ]
+}
