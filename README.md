@@ -35,6 +35,7 @@ This code uses the remote state management strategy, where the Terraform state f
 3. As an alternative, [Set up a service principal to authenticate with Azure](https://www.terraform.io/docs/provideers/azurerm/guides/service_principal_client_secret.html).  Uncomment the principal and password variables in the following files:
 
 **remote-state-prep/terraform.tfvars**
+
 **remote-state-prep/main.tf** (lines 5-6 and 39-40)
 
 4. Run the PowerShell script **create-storage.ps1**.  This will create a file called **backend-config.txt** in the same directory which contains the values needed to configure the rest of the scripts.
