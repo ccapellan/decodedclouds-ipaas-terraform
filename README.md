@@ -10,18 +10,18 @@ This repository contains the source code to get started with Terraform and Azure
 
 ## Installation on Machine
 
-These are my recommendations on getting set up to properly use these scripts.
+These are my recommendations on getting set up to properly use these scripts.  This code is meant to run on a Windows computer leveraging PowerShell.
 
 1. Download [Terraform](https://www.terraform.io/downloads.html) and add executable to path environment variable
 2. Install Visual Studio Code
 3. Install VS Code Terraform extension by HashiCorp
 4. Install Git for Windows
 5. Allow PowerShell script execution on local machine
-6. Install latest version of Azure CLI
 
 `Set-ExecutionPolicy -ExecutionPolicy Bypass`
 
-6. An Azure subscription for which you have at least Contributor access
+6. Install latest version of [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+7. An Azure subscription for which you have at least Contributor access
 
 # Build and Test
 
