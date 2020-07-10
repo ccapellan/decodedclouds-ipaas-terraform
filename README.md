@@ -28,24 +28,13 @@ These are my recommendations on getting set up to properly use these scripts.
 This code uses the remote state management strategy, where the Terraform state file is hosted in an Azure Storage container.  Follow the steps below to create an Azure storage account and container to use to host Terraform's state file.
 
 1. Clone this repo
-2. Create a file called **terraform.tfvars** in the **remote-state-prep** folder with the following variables (values will be obtained in next step)
+2. Remove the .example extension to the file **remote-state-prep/terraform.tfvars.example**, and fill in the proper values in the file.  
+3. This example authenticates using [Azure CLI](https://www.terraform.io/docs/providers/azurerm/guides/azure_cli.html).  To use the service principal option, follow step 4. If not, proceed to step 5.
 
-`arm_subscription_id = "(value)"`
 
-`arm_principal = "(value)"`
+3. As an alternative, [Set up a service principal to authenticate with Azure](https://www.terraform.io/docs/provideers/azurerm/guides/service_principal_client_secret.html).  Uncomment the principal and password variables in the following files:
 
-`arm_password = "(value)"`
-
-`arm_environment = "(value)"`
-
-`tenant_id = "(value)"`
-
-`environment = "(prefix that defines env; ex: Dev)"` 
-
-`location = "eastus2"`
-
-`naming_prefix = "dc"`
-
-3. [Set up a service principal to authenticate with Azure](https://www.terraform.io/docs/providers/azurerm/guides/service_principal_client_secret.html).  Note to update the file created in the previous step with the values obtained.
+**remote-state-prep/terraform.tfvars**
+**remote-state-prep/main.tf** (lines 5-6 and 39-40)
 
 4. Run the PowerShell script **create-storage.ps1**.  This will create a file called **backend-config.txt** in the same directory which contains the values needed to configure Azure DevOps.
