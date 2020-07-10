@@ -38,4 +38,4 @@ This code uses the remote state management strategy, where the Terraform state f
 
 **remote-state-prep/main.tf** (lines 5-6 and 39-40)
 
-4. Run the PowerShell script **create-storage.ps1**.  This will create a file called **backend-config.txt** in the same directory which contains the values needed to configure the rest of the scripts.
+5. Run the PowerShell script **create-storage.ps1**.  This will create a file called **backend-config.txt** in the same directory which contains the values needed to configure the rest of the scripts.
