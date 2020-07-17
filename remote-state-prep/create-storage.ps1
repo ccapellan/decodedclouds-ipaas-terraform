@@ -5,7 +5,7 @@ az login
 #az account set --subscription="<azure subscription id>"
 
 #variables needed to be set
-$plan_file_name = "state.tfplan"
+$plan_file_name = "plan.tfplan"
 
 #set location to where the script is being executed from
 $scriptpath = $MyInvocation.MyCommand.Path

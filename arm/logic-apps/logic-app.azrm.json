@@ -1,0 +1,201 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_CheckTwitter_name": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_cognitiveservicestextanalytics_externalid": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_sendgrid_externalid": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_twitter_externalid": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "resouce_location": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_cognitiveservicestextanalytics_name": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_sendgrid_name": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "connections_twitter_name": {
+            "type": "String",
+            "defaultValue": ""
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_cognitiveservicestextanalytics_name')]",
+            "location": "eastus",
+            "properties": {
+                "displayName": "dc-sandbox-textanalytics",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/eastus/managedApis/', parameters('connections_cognitiveservicestextanalytics_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_sendgrid_name')]",
+            "location": "eastus",
+            "properties": {
+                "displayName": "[parameters('connections_sendgrid_name')]",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/',parameters('resouce_location'),'/managedApis/', parameters('connections_sendgrid_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_twitter_name')]",
+            "location": "eastus",
+            "properties": {
+                "displayName": "decodedcloud",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/',parameters('resouce_location'),'/managedApis/', parameters('connections_twitter_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_CheckTwitter_name')]",
+            "location": "[parameters('resouce_location')]",
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_new_tweet_is_posted": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 5
+                            },
+                            "splitOn": "@triggerBody()?['value']",
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['twitter']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/onnewtweet",
+                                "queries": {
+                                    "searchQuery": "#decodedclouds"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Condition": {
+                            "actions": {
+                                "Send_email_(V4)": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "from": "ccapellan@gmail.com",
+                                            "ishtml": true,
+                                            "subject": "There was a negative tweet!",
+                                            "text": "<p>The score was @{body('Detect_Sentiment')?['score']} for the following tweet:<br>\n@{triggerBody()?['OriginalTweet']}</p>",
+                                            "to": "christian.capellan@decodedclouds.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['sendgrid']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v4/mail/send"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Detect_Sentiment": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "greaterOrEquals": [
+                                            "@body('Detect_Sentiment')?['score']",
+                                            "@float('.5')"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "Detect_Sentiment": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "text": "@triggerBody()?['TweetText']"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['cognitiveservicestextanalytics']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/text/analytics/v2.1/sentiment"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "cognitiveservicestextanalytics": {
+                                "connectionId": "[parameters('connections_cognitiveservicestextanalytics_externalid')]",
+                                "connectionName": "cognitiveservicestextanalytics",
+                                "id": "/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/eastus/managedApis/cognitiveservicestextanalytics"
+                            },
+                            "sendgrid": {
+                                "connectionId": "[parameters('connections_sendgrid_externalid')]",
+                                "connectionName": "sendgrid",
+                                "id": "/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/eastus/managedApis/sendgrid"
+                            },
+                            "twitter": {
+                                "connectionId": "[parameters('connections_twitter_externalid')]",
+                                "connectionName": "twitter",
+                                "id": "/subscriptions/ab29ab57-cf1d-4e7e-aa21-6ff49fea6e7e/providers/Microsoft.Web/locations/eastus/managedApis/twitter"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

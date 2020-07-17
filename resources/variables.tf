@@ -1,7 +1,7 @@
 ##################################################################################
 # VARIABLES
 ##################################################################################
-variable "naming_prefix" {
+variable "resource_naming_prefix" {
   type    = string
   default = "dc"
 }
@@ -21,6 +21,6 @@ variable "integration_acct_sku" {
   default = "Free"
 }
 
-variable "custom_api_connector_costcenter_service_url" {
+variable "custom_api_connector_service_url" {
   type    = string
 }
