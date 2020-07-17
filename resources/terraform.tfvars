@@ -1,5 +1,5 @@
-naming_prefix = "dc"
-resource_location = "eastus2"
+resource_naming_prefix = "dc"
+resource_location = "eastus"
 arm_environment = "public"
 integration_acct_sku = "Free"
-custom_api_connector_costcenter_service_url = "http://api.decodedclouds.com/v1"
+custom_api_connector_service_url = "http://api.decodedclouds.com/v1"

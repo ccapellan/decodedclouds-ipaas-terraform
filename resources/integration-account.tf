@@ -3,10 +3,10 @@
 ##################################################################################
 
 resource "azurerm_logic_app_integration_account" "integration_acct" {
-  name                = local.integration_acct_name
+  name                = "${local.prefix_name}-integration-account"
   resource_group_name = azurerm_resource_group.rg_integration_resources.name
   location            = azurerm_resource_group.rg_integration_resources.location
-  sku_name            = local.sku
+  sku_name            = var.integration_acct_sku
 }
 
 resource "azurerm_template_deployment" "integration_acct_components" {

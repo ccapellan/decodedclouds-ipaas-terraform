@@ -3,11 +3,7 @@
 ##################################################################################
 
 locals {
-  rg_integration_resources_name = "${var.naming_prefix}-${terraform.workspace}-shared-resources"
-  rg_connectors_name = "${var.naming_prefix}-${terraform.workspace}-connectors"
-  prefix_name           = "${var.naming_prefix}-${terraform.workspace}"
-  integration_acct_name = "${local.prefix_name}-integration-account"
-  sku                   = var.integration_acct_sku
+  prefix_name = "${var.resource_naming_prefix}-${terraform.workspace}"
 }
 
 ##################################################################################
@@ -25,12 +21,17 @@ provider "azurerm" {
 ##################################################################################
 
 resource "azurerm_resource_group" "rg_integration_resources" {
-  name = local.rg_integration_resources_name
+  name = "${local.prefix_name}-shared-resources"
   location = var.resource_location
 }
 
 resource "azurerm_resource_group" "rg_connectors" {
-  name = local.rg_connectors_name
+  name = "${local.prefix_name}-connectors"
+  location = var.resource_location
+}
+
+resource "azurerm_resource_group" "rg_logic_apps" {
+  name = "${local.prefix_name}-logic-apps"
   location = var.resource_location
 }
 
@@ -44,4 +45,8 @@ output "azure-resourcegroup-integration-resources" {
 
 output "azure-resourcegroup-connectors" {
   value = azurerm_resource_group.rg_connectors.name
+}
+
+output "azure-resourcegroup-logic-apps" {
+  value = azurerm_resource_group.rg_logic_apps.name
 }
