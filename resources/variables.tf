@@ -1,7 +1,7 @@
 ##################################################################################
 # VARIABLES
 ##################################################################################
-variable "resource_naming_prefix" {
+variable "resources_naming_prefix" {
   type    = string
   default = "dc"
 }
