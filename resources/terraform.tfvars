@@ -1,4 +1,4 @@
-resource_naming_prefix = "dc"
+resources_naming_prefix = "dc"
 resource_location = "eastus"
 arm_environment = "public"
 integration_acct_sku = "Free"

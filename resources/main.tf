@@ -3,7 +3,7 @@
 ##################################################################################
 
 locals {
-  prefix_name = "${var.resource_naming_prefix}-${terraform.workspace}"
+  prefix_name = "${var.resources_naming_prefix}-${terraform.workspace}"
 }
 
 ##################################################################################
